@@ -19,7 +19,41 @@ enum class TimeUnits {
     SECOND,
     MINUTE,
     HOUR,
-    DAY
+    DAY;
+
+    /**
+     * Метод [plural] для всех перечислений [TimeUnits]
+     *
+     * @param value значение единиц измерения
+     * @return значение в виде строки с правильно склоненной единицой измерения
+     */
+    fun plural(value: Int): String {
+        val format = when (this) {
+            SECOND, MINUTE -> {
+                val ending = when {
+                    value.toString().last() in '2'..'4' && value !in 12..14 -> "ы"
+                    value.toString().last() == '1' && value != 11 -> "у"
+                    else -> ""
+                }
+                "${if (this == SECOND) STR_SECOND else STR_MINUTE}$ending"
+            }
+            HOUR -> {
+                val ending = when {
+                    value.toString().last() in '2'..'4' && value !in 12..14 -> "а"
+                    value.toString().last() == '1' && value != 11 -> ""
+                    else -> "ов"
+                }
+                "$STR_HOUR$ending"
+            }
+            DAY -> when {
+                value.toString().last() in '2'..'4' && value !in 12..14 -> "дня"
+                value.toString().last() == '1' && value != 11 -> "день"
+                else -> "дней"
+            }
+        }
+
+        return "$value $format"
+    }
 }
 
 /**
@@ -108,38 +142,4 @@ fun Date.humanizeDiff(date: Date = Date()): String {
             else -> "более чем через год"
         }
     }
-}
-
-/**
- * Метод [plural] для всех перечислений [TimeUnits]
- *
- * @param value значение единиц измерения
- * @return значение в виде строки с правильно склоненной единицой измерения
- */
-fun TimeUnits.plural(value: Int): String {
-    val format = when (this) {
-        TimeUnits.SECOND, TimeUnits.MINUTE -> {
-            val ending = when {
-                value.toString().last() in '2'..'4' && value !in 12..14 -> "ы"
-                value.toString().last() == '1' && value != 11 -> "у"
-                else -> ""
-            }
-            "${if (this == TimeUnits.SECOND) STR_SECOND else STR_MINUTE}$ending"
-        }
-        TimeUnits.HOUR -> {
-            val ending = when {
-                value.toString().last() in '2'..'4' && value !in 12..14 -> "а"
-                value.toString().last() == '1' && value != 11 -> ""
-                else -> "ов"
-            }
-            "$STR_HOUR$ending"
-        }
-        TimeUnits.DAY -> when {
-            value.toString().last() in '2'..'4' && value !in 12..14 -> "дня"
-            value.toString().last() == '1' && value != 11 -> "день"
-            else -> "дней"
-        }
-    }
-
-    return "$value $format"
 }
