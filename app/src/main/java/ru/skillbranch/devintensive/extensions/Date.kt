@@ -93,7 +93,8 @@ fun Date.add(value: Int, units: TimeUnits = TimeUnits.SECOND): Date = apply {
 /**
  * Форматированный вывод разницы между датами в человекообразном формате
  *
- *
+ * @param date сравниваемая дата
+ * @return разница во времени между [this] и [date]
  */
 fun Date.humanizeDiff(date: Date = Date()): String {
     val isPast = time < date.time
