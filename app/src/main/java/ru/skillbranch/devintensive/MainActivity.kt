@@ -11,6 +11,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import ru.skillbranch.devintensive.extensions.hideKeyboard
+import ru.skillbranch.devintensive.extensions.isKeyboardOpen
 import ru.skillbranch.devintensive.models.Bender
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -45,6 +47,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener(this)
+
+        messageEt.setOnEditorActionListener { _, _, _ ->
+            if (messageEt.text.isNotBlank()) {
+                updateBender()
+                hideKeyboard()
+            }
+            true
+        }
     }
 
     override fun onRestart() {
@@ -91,13 +101,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     @SuppressLint("DefaultLocale")
     override fun onClick(v: View?) {
         if (v?.id == R.id.iv_send) {
-            val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString())
-
-            val (r, g, b) = color
-            benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
-
-            messageEt.setText("")
-            textTxt.text = phrase
+            updateBender().also {
+                if (isKeyboardOpen()) {
+                    hideKeyboard()
+                }
+            }
         }
+    }
+
+    private fun updateBender() {
+        val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString())
+
+        val (r, g, b) = color
+        benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
+
+        messageEt.setText("")
+        textTxt.text = phrase
     }
 }
