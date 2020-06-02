@@ -40,6 +40,7 @@
             android:lines="1"
             android:paddingTop="@dimen/spacing_normal_16"
             android:paddingBottom="@dimen/spacing_normal_16"
+            android:singleLine="true"
             android:textColor="@color/color_gray_light"
             android:textColorHint="@color/color_gray_light" />
 
