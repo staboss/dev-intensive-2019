@@ -8,9 +8,9 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import kotlin.math.roundToInt
 
-fun Activity.hideKeyboard() = hideKeyboard(currentFocus ?: View(this))
+/* KEYBOARD */
 
-fun Activity.getRootView(): View = findViewById(android.R.id.content)
+fun Activity.hideKeyboard() = hideKeyboard(currentFocus ?: View(this))
 
 fun Activity.isKeyboardClosed(): Boolean = !isKeyboardOpen()
 
@@ -23,6 +23,9 @@ fun Activity.isKeyboardOpen(): Boolean {
 
     return heightDiff > marginOfError
 }
+
+/* OTHERS */
+fun Activity.getRootView(): View = findViewById(android.R.id.content)
 
 /* CONTEXT */
 
