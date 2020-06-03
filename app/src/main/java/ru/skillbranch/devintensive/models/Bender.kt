@@ -20,9 +20,10 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         !question.validate(answer) -> {
             "${question.rule}\n${question.question}" to status.color
         }
-        question.answers.contains(answer) -> {
+        question.answers.containsIgnoreCase(answer) -> {
             counter = 0
             question = question.nextQuestion()
+
             "Отлично - ты справился\n${question.question}" to status.color
         }
         else -> {
@@ -30,7 +31,10 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
             status = status.nextStatus()
 
             when (counter) {
-                3 -> "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
+                3 -> {
+                    counter = 0
+                    "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
+                }
                 else -> "Это неправильный ответ\n${question.question}" to status.color
             }
         }
@@ -95,7 +99,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
                 answer.all { it in '0'..'9' } && answer.length == 7
         },
 
-        IDLE("На этом все, вопросов больше нет", emptyList()) {
+        IDLE("На этом все, вопросов больше нет", listOf()) {
 
             override val rule: String = ""
 
@@ -110,4 +114,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
 
         abstract fun validate(answer: String): Boolean
     }
+
+    private fun List<String>.containsIgnoreCase(element: String): Boolean =
+        any { it.equals(element, true) }
 }

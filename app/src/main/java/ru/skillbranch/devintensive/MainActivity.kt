@@ -1,11 +1,12 @@
 package ru.skillbranch.devintensive
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -48,8 +49,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener(this)
 
-        messageEt.setOnEditorActionListener { _, _, _ ->
-            if (messageEt.text.isNotBlank()) {
+        messageEt.setOnEditorActionListener { _, id, _ ->
+            if (id == EditorInfo.IME_ACTION_DONE && messageEt.text.isNotBlank()) {
                 updateBender()
                 hideKeyboard()
             }
@@ -98,13 +99,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Log.d("M_MainActivity", msg)
     }
 
-    @SuppressLint("DefaultLocale")
     override fun onClick(v: View?) {
         if (v?.id == R.id.iv_send) {
-            updateBender().also {
-                if (isKeyboardOpen()) {
-                    hideKeyboard()
-                }
+            updateBender()
+
+            if (isKeyboardOpen()) {
+                hideKeyboard()
             }
         }
     }
