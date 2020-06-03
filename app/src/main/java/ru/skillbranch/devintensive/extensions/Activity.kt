@@ -25,6 +25,7 @@ fun Activity.isKeyboardOpen(): Boolean {
 }
 
 /* OTHERS */
+
 fun Activity.getRootView(): View = findViewById(android.R.id.content)
 
 /* CONTEXT */
