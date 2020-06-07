@@ -1,7 +1,8 @@
 package ru.skillbranch.devintensive.repositories
 
+import android.content.Context.MODE_PRIVATE
 import androidx.appcompat.app.AppCompatDelegate
-import net.alexandroid.shpref.ShPref
+import ru.skillbranch.devintensive.App
 import ru.skillbranch.devintensive.models.Profile
 
 object PreferencesRepository {
@@ -15,12 +16,16 @@ object PreferencesRepository {
     private const val FIRST_NAME = "FIRST_NAME"
     private const val REPOSITORY = "REPOSITORY"
 
+    private const val PREFERENCE_NAME = "DevSharedPreference"
+
+    private val shPref = App.getAppContext()!!.getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE)
+
     fun saveAppTheme(theme: Int) {
         putValue(APP_THEME to theme)
     }
 
     fun getAppTheme(): Int {
-        return ShPref.getInt(APP_THEME, AppCompatDelegate.MODE_NIGHT_NO)
+        return shPref.getInt(APP_THEME, AppCompatDelegate.MODE_NIGHT_NO)
     }
 
     fun saveProfile(profile: Profile) {
@@ -35,16 +40,25 @@ object PreferencesRepository {
     }
 
     fun getProfile(): Profile = Profile(
-        about = ShPref.getString(ABOUT, ""),
-        rating = ShPref.getInt(RATING, 0),
-        respect = ShPref.getInt(RESPECT, 0),
-        lastName = ShPref.getString(LAST_NAME, ""),
-        firstName = ShPref.getString(FIRST_NAME, ""),
-        repository = ShPref.getString(REPOSITORY, "")
+        about = shPref.getString(ABOUT, "")!!,
+        rating = shPref.getInt(RATING, 0),
+        respect = shPref.getInt(RESPECT, 0),
+        lastName = shPref.getString(LAST_NAME, "")!!,
+        firstName = shPref.getString(FIRST_NAME, "")!!,
+        repository = shPref.getString(REPOSITORY, "")!!
     )
 
     private fun putValue(pair: Pair<String, Any>) {
         val (key, value) = pair
-        ShPref.put(key, value)
+
+        val editor = shPref.edit()
+        when (value) {
+            is Int -> editor.putInt(key, value)
+            is Long -> editor.putLong(key, value)
+            is Float -> editor.putFloat(key, value)
+            is Boolean -> editor.putBoolean(key, value)
+            is String -> editor.putString(key, value)
+        }
+        editor.apply()
     }
 }
