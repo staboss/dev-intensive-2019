@@ -24,4 +24,3 @@ fun User.toUserView(): UserView {
         status = status
     )
 }
-

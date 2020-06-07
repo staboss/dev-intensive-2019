@@ -44,4 +44,3 @@ fun String.stripHtml(): String {
     result = result.replace(HTML_REGEX_3, " ")
     return result.trim()
 }
-

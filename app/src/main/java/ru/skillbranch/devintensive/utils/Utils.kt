@@ -58,15 +58,15 @@ object Utils {
      * @return преобразованная строка из латинских символов
      */
     fun transliteration(payload: String, divider: String = " "): String = payload
-         .split("\\s+".toRegex()).joinToString(divider) { word ->
-             word.map { letter ->
-                 when {
-                     letter.toString() in transliteration -> transliteration[letter.toString()]
-                     else -> letter
-                 }
+        .split("\\s+".toRegex()).joinToString(divider) { word ->
+            word.map { letter ->
+                when {
+                    letter.toString() in transliteration -> transliteration[letter.toString()]
+                    else -> letter
+                }
 
-             }.joinToString("")
-         }
+            }.joinToString("")
+        }
 
     private val transliteration by lazy {
         transliterationLowerCase + transliterationUpperCase
