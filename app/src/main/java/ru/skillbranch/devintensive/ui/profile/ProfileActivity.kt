@@ -32,8 +32,6 @@ class ProfileActivity : AppCompatActivity() {
     private val viewModelFactory = AndroidViewModelFactory.getInstance(application)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         Log.d("M_ProfileActivity", "onCreate")
