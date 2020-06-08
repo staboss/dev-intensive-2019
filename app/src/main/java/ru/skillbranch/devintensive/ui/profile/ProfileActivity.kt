@@ -32,6 +32,7 @@ class ProfileActivity : AppCompatActivity() {
     private val viewModelFactory = AndroidViewModelFactory.getInstance(application)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         Log.d("M_ProfileActivity", "onCreate")
@@ -53,7 +54,8 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun updateTheme(mode: Int) {
         Log.d("M_ProfileActivity", "update theme")
-        AppCompatDelegate.setDefaultNightMode(mode)
+        delegate.localNightMode = mode
+        // AppCompatDelegate.setDefaultNightMode(mode)
     }
 
     private fun updateUI(profile: Profile) {
