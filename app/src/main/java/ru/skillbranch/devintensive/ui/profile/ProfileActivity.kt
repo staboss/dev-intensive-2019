@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -52,7 +53,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun updateTheme(mode: Int) {
         Log.d("M_ProfileActivity", "update theme")
-        delegate.localNightMode = mode
+        AppCompatDelegate.setDefaultNightMode(mode)
     }
 
     private fun updateUI(profile: Profile) {
