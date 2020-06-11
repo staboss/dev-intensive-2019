@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import kotlinx.android.synthetic.main.activity_profile.*
 import ru.skillbranch.devintensive.R
-import ru.skillbranch.devintensive.models.Profile
+//import ru.skillbranch.devintensive.models.Profile
 import ru.skillbranch.devintensive.viewmodels.ProfileViewModel
 
 class ProfileActivity : AppCompatActivity() {
@@ -33,8 +33,8 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        initViews(savedInstanceState)
-        initViewModel()
+//        initViews(savedInstanceState)
+//        initViewModel()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -42,23 +42,23 @@ class ProfileActivity : AppCompatActivity() {
         outState.putBoolean(IS_EDIT_MODE, isEditMode)
     }
 
-    private fun initViewModel() {
-        viewModel = viewModelFactory.create(ProfileViewModel::class.java)
-        viewModel.getProfileData().observe(this, Observer { updateUI(it) })
-        viewModel.getTheme().observe(this, Observer { updateTheme(it) })
-    }
+//    private fun initViewModel() {
+//        viewModel = viewModelFactory.create(ProfileViewModel::class.java)
+//        viewModel.getProfileData().observe(this, Observer { updateUI(it) })
+//        viewModel.getTheme().observe(this, Observer { updateTheme(it) })
+//    }
 
     private fun updateTheme(mode: Int) {
         delegate.setLocalNightMode(mode)
     }
 
-    private fun updateUI(profile: Profile) {
-        profile.toMap().also { profileData ->
-            for ((key, view) in viewFields) {
-                view.text = profileData[key].toString()
-            }
-        }
-    }
+//    private fun updateUI(profile: Profile) {
+//        profile.toMap().also { profileData ->
+//            for ((key, view) in viewFields) {
+//                view.text = profileData[key].toString()
+//            }
+//        }
+//    }
 
     private fun initViews(savedInstanceState: Bundle?) {
         isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
@@ -121,14 +121,14 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveProfileInfo() {
-        Profile(
-            about = et_about.text.toString(),
-            lastName = et_last_name.text.toString(),
-            firstName = et_first_name.text.toString(),
-            repository = et_repository.text.toString()
-        ).apply {
-            viewModel.saveProfileData(this)
-        }
-    }
+//    private fun saveProfileInfo() {
+//        Profile(
+//            about = et_about.text.toString(),
+//            lastName = et_last_name.text.toString(),
+//            firstName = et_first_name.text.toString(),
+//            repository = et_repository.text.toString()
+//        ).apply {
+//            viewModel.saveProfileData(this)
+//        }
+//    }
 }
