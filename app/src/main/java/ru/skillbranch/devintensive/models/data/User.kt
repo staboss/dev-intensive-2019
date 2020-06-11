@@ -15,6 +15,24 @@ data class User(
     var isOnline: Boolean = false
 ) {
 
+    fun toUserItem(): UserItem {
+        val lastActivity = when {
+            lastVisit == null -> "Еще ни разу не заходил"
+            isOnline -> "online"
+            else -> "Последний раз был ${lastVisit!!.humanizeDiff()}"
+        }
+
+        return UserItem(
+            id = id,
+            fullName = "${firstName.orEmpty()} ${lastName.orEmpty()}",
+            initials = Utils.toInitials(firstName, lastName),
+            avatar = avatar,
+            lastActivity = lastActivity,
+            isSelected = false,
+            isOnline = isOnline
+        )
+    }
+
     constructor(id: String, firstName: String?, lastName: String?) : this(
         id = id,
         firstName = firstName,
@@ -131,22 +149,4 @@ data class User(
         result = 31 * result + (lastName?.hashCode() ?: 0)
         return result
     }
-}
-
-fun User.toUserItem(): UserItem {
-    val lastActivity = when {
-        lastVisit == null -> "Еще ни разу не заходил"
-        isOnline -> "online"
-        else -> "Последний раз был ${lastVisit!!.humanizeDiff()}"
-    }
-
-    return UserItem(
-        id = id,
-        fullName = "${firstName.orEmpty()} ${lastName.orEmpty()}",
-        initials = Utils.toInitials(firstName, lastName),
-        avatar = avatar,
-        lastActivity = lastActivity,
-        isSelected = false,
-        isOnline = isOnline
-    )
 }

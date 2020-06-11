@@ -6,7 +6,6 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import ru.skillbranch.devintensive.extensions.mutableLiveData
 import ru.skillbranch.devintensive.models.data.UserItem
-import ru.skillbranch.devintensive.models.data.toUserItem
 import ru.skillbranch.devintensive.repositories.GroupRepository
 
 class GroupViewModel : ViewModel() {
