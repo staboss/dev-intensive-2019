@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.R
-import ru.skillbranch.devintensive.extensions.createSnackBar
+//import ru.skillbranch.devintensive.extensions.createSnackBar
 import ru.skillbranch.devintensive.extensions.dp
 import ru.skillbranch.devintensive.extensions.getModeColor
 import ru.skillbranch.devintensive.ui.adapters.ChatAdapter
@@ -65,11 +65,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         chatAdapter = ChatAdapter {
-            rv_chat_list.createSnackBar(
-                message = "Click on ${it.title}",
-                textColor = getModeColor(R.attr.colorSnackBarText),
-                backgroundResource = R.drawable.bg_snackbar
-            ).show()
+            Snackbar.make(rv_chat_list, "Click on ${it.title}", Snackbar.LENGTH_SHORT).apply {
+                setTextColor(getModeColor(R.attr.colorSnackBarText))
+                view.setBackgroundResource(R.drawable.bg_snackbar)
+            }.show()
+//            rv_chat_list.createSnackBar(
+//                message = "Click on ${it.title}",
+//                textColor = getModeColor(R.attr.colorSnackBarText),
+//                backgroundResource = R.drawable.bg_snackbar
+//            ).show()
         }
 
         val myDivider = resources.getDrawable(R.drawable.divider_chat_list, theme)
@@ -87,13 +91,19 @@ class MainActivity : AppCompatActivity() {
             val id = it.id
             viewModel.addToArchive(id)
 
-            rv_chat_list.createSnackBar(
-                message = "Вы точно хотите добавить ${it.title} в архив?",
-                textColor = getModeColor(R.attr.colorSnackBarText),
-                textActionColor = getModeColor(R.attr.colorSnackBarActionText),
-                backgroundResource = R.drawable.bg_snackbar,
-                action = { viewModel.restoreFromArchive(id) }
-            ).show()
+            Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${it.title} в архив?", Snackbar.LENGTH_SHORT).apply {
+                setTextColor(getModeColor(R.attr.colorSnackBarText))
+                setActionTextColor(getModeColor(R.attr.colorSnackBarActionText))
+                view.setBackgroundResource(R.drawable.bg_snackbar)
+            }.show()
+
+//            rv_chat_list.createSnackBar(
+//                message = "Вы точно хотите добавить ${it.title} в архив?",
+//                textColor = getModeColor(R.attr.colorSnackBarText),
+//                textActionColor = getModeColor(R.attr.colorSnackBarActionText),
+//                backgroundResource = R.drawable.bg_snackbar,
+//                action = { viewModel.restoreFromArchive(id) }
+//            ).show()
         }
 
         val touchHelper = ItemTouchHelper(touchCallback)
