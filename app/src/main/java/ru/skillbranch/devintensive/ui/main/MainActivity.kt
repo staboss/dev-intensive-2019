@@ -65,10 +65,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         chatAdapter = ChatAdapter {
-            Snackbar.make(rv_chat_list, "Click on ${it.title}", Snackbar.LENGTH_SHORT).apply {
-                setTextColor(getModeColor(R.attr.colorSnackBarText))
-                view.setBackgroundResource(R.drawable.bg_snackbar)
-            }.show()
+            Snackbar.make(rv_chat_list, "Click on ${it.title}", Snackbar.LENGTH_SHORT).show()
+//                .apply {
+//                setTextColor(getModeColor(R.attr.colorSnackBarText))
+//                view.setBackgroundResource(R.drawable.bg_snackbar)
+//            }.show()
 //            rv_chat_list.createSnackBar(
 //                message = "Click on ${it.title}",
 //                textColor = getModeColor(R.attr.colorSnackBarText),
@@ -92,10 +93,13 @@ class MainActivity : AppCompatActivity() {
             viewModel.addToArchive(id)
 
             Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${it.title} в архив?", Snackbar.LENGTH_SHORT).apply {
-                setTextColor(getModeColor(R.attr.colorSnackBarText))
-                setActionTextColor(getModeColor(R.attr.colorSnackBarActionText))
-                view.setBackgroundResource(R.drawable.bg_snackbar)
+                setAction("Отмена") { viewModel.restoreFromArchive(id) }
             }.show()
+//                .apply {
+//                setTextColor(getModeColor(R.attr.colorSnackBarText))
+//                setActionTextColor(getModeColor(R.attr.colorSnackBarActionText))
+//                view.setBackgroundResource(R.drawable.bg_snackbar)
+//            }.show()
 
 //            rv_chat_list.createSnackBar(
 //                message = "Вы точно хотите добавить ${it.title} в архив?",
