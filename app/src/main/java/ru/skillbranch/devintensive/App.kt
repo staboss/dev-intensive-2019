@@ -19,7 +19,7 @@ class App : Application() {
         context = applicationContext
 
         PreferencesRepository.getAppTheme().also {
-            AppCompatDelegate.setDefaultNightMode(it)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
     }
 }

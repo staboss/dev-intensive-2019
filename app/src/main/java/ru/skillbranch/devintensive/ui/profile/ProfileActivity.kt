@@ -5,12 +5,10 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -34,7 +32,6 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-        Log.d("M_ProfileActivity", "onCreate")
 
         initViews(savedInstanceState)
         initViewModel()
@@ -52,9 +49,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun updateTheme(mode: Int) {
-        Log.d("M_ProfileActivity", "update theme")
-        // delegate.localNightMode = mode
-        AppCompatDelegate.setDefaultNightMode(mode)
+        delegate.setLocalNightMode(mode)
     }
 
     private fun updateUI(profile: Profile) {
@@ -80,10 +75,6 @@ class ProfileActivity : AppCompatActivity() {
         btn_edit.setOnClickListener {
             isEditMode = !isEditMode
             showCurrentMode(isEditMode)
-
-            if (!isEditMode) {
-                saveProfileInfo()
-            }
         }
 
         btn_switch_theme.setOnClickListener {
@@ -97,8 +88,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         info.forEach { (_, view) ->
-            view as EditText
-            with(view) {
+            (view as EditText).apply {
                 isEnabled = isEdit
                 isFocusable = isEdit
                 isFocusableInTouchMode = isEdit
@@ -108,6 +98,7 @@ class ProfileActivity : AppCompatActivity() {
 
         ic_eye.visibility = if (isEdit) View.GONE else View.VISIBLE
         wr_about.isCounterEnabled = isEdit
+        wr_repository.isErrorEnabled = isEdit
 
         with(btn_edit) {
             val filter: ColorFilter? = if (isEdit) {

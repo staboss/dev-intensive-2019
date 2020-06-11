@@ -48,17 +48,15 @@ object PreferencesRepository {
         repository = shPref.getString(REPOSITORY, "")!!
     )
 
-    private fun putValue(pair: Pair<String, Any>) {
+    private fun putValue(pair: Pair<String, Any>) = with(shPref.edit()) {
         val (key, value) = pair
-
-        val editor = shPref.edit()
         when (value) {
-            is Int -> editor.putInt(key, value)
-            is Long -> editor.putLong(key, value)
-            is Float -> editor.putFloat(key, value)
-            is Boolean -> editor.putBoolean(key, value)
-            is String -> editor.putString(key, value)
+            is Int -> putInt(key, value)
+            is Long -> putLong(key, value)
+            is Float -> putFloat(key, value)
+            is Boolean -> putBoolean(key, value)
+            is String -> putString(key, value)
         }
-        editor.apply()
+        apply()
     }
 }

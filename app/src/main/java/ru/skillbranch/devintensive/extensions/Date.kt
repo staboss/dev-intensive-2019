@@ -15,53 +15,6 @@ const val STR_SECOND = "секунд"
 const val STR_MINUTE = "минут"
 const val STR_HOUR = "час"
 
-enum class TimeUnits {
-    SECOND,
-    MINUTE,
-    HOUR,
-    DAY;
-
-    /**
-     * Метод [plural] для всех перечислений [TimeUnits]
-     *
-     * @param value значение единиц измерения
-     * @return значение в виде строки с правильно склоненной единицой измерения
-     */
-    fun plural(value: Int): String {
-        val format = when (this) {
-            SECOND, MINUTE -> {
-                val ending = when {
-                    value.toString().last() in '2'..'4' && value !in 12..14 -> "ы"
-                    value.toString().last() == '1' && value != 11 -> "у"
-                    else -> ""
-                }
-                "${if (this == SECOND) STR_SECOND else STR_MINUTE}$ending"
-            }
-            HOUR -> {
-                val ending = when {
-                    value.toString().last() in '2'..'4' && value !in 12..14 -> "а"
-                    value.toString().last() == '1' && value != 11 -> ""
-                    else -> "ов"
-                }
-                "$STR_HOUR$ending"
-            }
-            DAY -> when {
-                value.toString().last() in '2'..'4' && value !in 12..14 -> "дня"
-                value.toString().last() == '1' && value != 11 -> "день"
-                else -> "дней"
-            }
-        }
-
-        return "$value $format"
-    }
-}
-
-/**
- * Возвращает отформатированную дату
- *
- * @param timeFormat паттерн форматирования
- * @return отформатированная дата
- */
 fun Date.format(timeFormat: String = "HH:mm:ss dd.MM.yy"): String {
     var formatter: SimpleDateFormat
 
@@ -74,13 +27,18 @@ fun Date.format(timeFormat: String = "HH:mm:ss dd.MM.yy"): String {
     }
 }
 
-/**
- * Добавляет или вычитает значение [value] из текущей даты
- *
- * @param value значение времени
- * @param units единицах измерения времени
- * @return модифицированный экземпляр [Date]
- */
+fun Date.shortFormat(): String? {
+    val pattern = if (this.isSameDay(Date())) "HH:mm" else "dd.MM.yy"
+    val dateFormat = SimpleDateFormat(pattern, LOCALE)
+    return dateFormat.format(this)
+}
+
+fun Date.isSameDay(date: Date): Boolean {
+    val day1 = this.time / DAY
+    val day2 = date.time / DAY
+    return day1 == day2
+}
+
 fun Date.add(value: Int, units: TimeUnits = TimeUnits.SECOND): Date = apply {
     time += when (units) {
         TimeUnits.SECOND -> value * SECOND
@@ -90,12 +48,6 @@ fun Date.add(value: Int, units: TimeUnits = TimeUnits.SECOND): Date = apply {
     }
 }
 
-/**
- * Форматированный вывод разницы между датами в человекообразном формате
- *
- * @param date сравниваемая дата
- * @return разница во времени между [this] и [date]
- */
 fun Date.humanizeDiff(date: Date = Date()): String {
     val isPast = time < date.time
 
@@ -142,5 +94,40 @@ fun Date.humanizeDiff(date: Date = Date()): String {
             true -> "более года назад"
             else -> "более чем через год"
         }
+    }
+}
+
+enum class TimeUnits {
+    SECOND,
+    MINUTE,
+    HOUR,
+    DAY;
+
+    fun plural(value: Int): String {
+        val format = when (this) {
+            SECOND, MINUTE -> {
+                val ending = when {
+                    value.toString().last() in '2'..'4' && value !in 12..14 -> "ы"
+                    value.toString().last() == '1' && value != 11 -> "у"
+                    else -> ""
+                }
+                "${if (this == SECOND) STR_SECOND else STR_MINUTE}$ending"
+            }
+            HOUR -> {
+                val ending = when {
+                    value.toString().last() in '2'..'4' && value !in 12..14 -> "а"
+                    value.toString().last() == '1' && value != 11 -> ""
+                    else -> "ов"
+                }
+                "$STR_HOUR$ending"
+            }
+            DAY -> when {
+                value.toString().last() in '2'..'4' && value !in 12..14 -> "дня"
+                value.toString().last() == '1' && value != 11 -> "день"
+                else -> "дней"
+            }
+        }
+
+        return "$value $format"
     }
 }

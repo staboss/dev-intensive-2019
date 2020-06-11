@@ -9,6 +9,7 @@ class UserView(
     val initials: String?
 ) {
     override fun toString(): String {
-        return "UserView(id='$id', fullName='$fullName', nickname='$nickname', avatar=$avatar, status=$status, initials=$initials)"
+        return "UserView(id='$id', fullName='$fullName', " +
+                "nickname='$nickname', avatar=$avatar, status=$status, initials=$initials)"
     }
 }

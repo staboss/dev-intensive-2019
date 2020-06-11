@@ -1,5 +1,6 @@
-package ru.skillbranch.devintensive.models
+package ru.skillbranch.devintensive.models.data
 
+import ru.skillbranch.devintensive.extensions.humanizeDiff
 import ru.skillbranch.devintensive.utils.Utils
 import java.util.*
 
@@ -38,9 +39,6 @@ data class User(
         isOnline = builder.isOnline
     )
 
-    /**
-     * Паттерн [Builder] для класса [User]
-     */
     class Builder {
 
         var id: String = ""
@@ -92,26 +90,21 @@ data class User(
         }
     }
 
-    /**
-     * Паттерн [Factory] для класса [User]
-     */
     companion object Factory {
 
         private var lastId = -1
 
-        /**
-         * Метод [makeUser] принимающий в качесте аргумента полное имя пользователя [fullName]
-         *
-         * @param fullName имя пользователя
-         * @return экземпляр класса [User]
-         */
         fun makeUser(fullName: String?): User {
             lastId++
 
             // деструктаризация объектов
             val (firstName, lastName) = Utils.parseFullName(fullName)
 
-            return User(id = "$lastId", firstName = firstName, lastName = lastName)
+            return User(
+                id = "$lastId",
+                firstName = firstName,
+                lastName = lastName
+            )
         }
 
         fun resetIdIndex() {
@@ -138,4 +131,22 @@ data class User(
         result = 31 * result + (lastName?.hashCode() ?: 0)
         return result
     }
+}
+
+fun User.toUserItem(): UserItem {
+    val lastActivity = when {
+        lastVisit == null -> "Еще ни разу не заходил"
+        isOnline -> "online"
+        else -> "Последний раз был ${lastVisit!!.humanizeDiff()}"
+    }
+
+    return UserItem(
+        id = id,
+        fullName = "${firstName.orEmpty()} ${lastName.orEmpty()}",
+        initials = Utils.toInitials(firstName, lastName),
+        avatar = avatar,
+        lastActivity = lastActivity,
+        isSelected = false,
+        isOnline = isOnline
+    )
 }
