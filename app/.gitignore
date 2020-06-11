@@ -5,5 +5,3 @@ libs/
 *.iml
 src/test/
 src/androidTest
-src/main/java/ru/skillbranch/devintensive/models/Profile.kt
-src/main/java/ru/skillbranch/devintensive/models/UserView.kt
